@@ -1,10 +1,19 @@
 package com.bridgelabz;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -163,6 +172,72 @@ public class AddressbookMain {
             List<String> readAllLines = Files.readAllLines(path);
             readAllLines.stream().forEach(line -> System.out.println(line));
         } catch (IOException e){
+            e.printStackTrace();
+        }
+
+        // writeCSV
+
+        String csvPath = "D:\\Review 5 week problem\\Review 5 Week\\src\\main\\java\\com\\bridgelabz\\addressbook.csv";
+
+        FileWriter fileWriter = null;
+
+
+        try {
+            fileWriter = new FileWriter(csvPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CSVWriter writer = new CSVWriter(fileWriter);
+
+        String[] header = {"FirstName","LastName","Email","Address","City","State","Zipcode","PhoneNumber"};
+        writer.writeNext(header);
+
+        List<String[]> csvLines = new ArrayList<String[]>();
+        dictionary.keySet().stream().forEach(bookName -> dictionary.get(bookName).getPersons()
+                .stream().forEach(person -> csvLines.add(person.getContactStrings())));
+
+
+        writer.writeAll(csvLines);
+
+        try {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Reading CSV
+
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(csvPath);
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        }
+
+        CSVReader reader = new CSVReaderBuilder(fileReader).build();
+
+        List<String[]> linesOfData = null;
+
+        try {
+            linesOfData = reader.readAll();
+        } catch (IOException | CsvException e) {
+
+            e.printStackTrace();
+        }
+
+        System.out.println("\nReading data from csv file:");
+        linesOfData.stream().forEach(csvs -> {
+            for (String value : csvs)
+                System.out.print(value + "\t");
+            System.out.println();
+        });
+
+        try {
+            reader.close();
+        } catch (IOException e) {
+
             e.printStackTrace();
         }
     }
