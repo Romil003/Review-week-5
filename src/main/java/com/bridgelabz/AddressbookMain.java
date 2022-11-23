@@ -4,23 +4,26 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class AddressbookMain {
 
 
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
         HashMap<String,AddressBook> dictionary = new HashMap<>();
         AddressBook book = new AddressBook();
         Scanner input = new Scanner(System.in);
@@ -176,101 +179,66 @@ public class AddressbookMain {
 
         String csvPath = "D:\\Review 5 week problem\\Review 5 Week\\src\\main\\java\\com\\bridgelabz\\addressbook.csv";
 
-//        FileWriter fileWriter = null;
-//
-//
-//        try {
-//            fileWriter = new FileWriter(csvPath);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        CSVWriter writer = new CSVWriter(fileWriter);
-//
-//        String[] header = {"FirstName","LastName","Email","Address","City","State","Zipcode","PhoneNumber"};
-//        writer.writeNext(header);
-//
-//        List<String[]> csvLines = new ArrayList<String[]>();
-//        dictionary.keySet().stream().forEach(bookName -> dictionary.get(bookName).getPersons()
-//                .stream().forEach(person -> csvLines.add(person.getContactStrings())));
-//
-//
-//        writer.writeAll(csvLines);
-//
-//        try {
-//            writer.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // Reading CSV
-//
-//        FileReader fileReader = null;
-//        try {
-//            fileReader = new FileReader(csvPath);
-//        } catch (FileNotFoundException e) {
-//
-//            e.printStackTrace();
-//        }
-//
-//        CSVReader reader = new CSVReaderBuilder(fileReader).build();
-//
-//        List<String[]> linesOfData = null;
-//
-//        try {
-//            linesOfData = reader.readAll();
-//        } catch (IOException | CsvException e) {
-//
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("\nReading data from csv file:");
-//        linesOfData.stream().forEach(csvs -> {
-//            for (String value : csvs)
-//                System.out.print(value + "\t");
-//            System.out.println();
-//        });
-//
-//        try {
-//            reader.close();
-//        } catch (IOException e) {
-//
-//            e.printStackTrace();
-//        }
+        FileWriter fileWriter = null;
 
-        // Reading and Writing JSON.
 
-        JSONArray jsonPersons = new JSONArray();
-
-        dictionary.keySet().stream().forEach(bookname -> dictionary.get(bookname).getPersons()
-                .stream().forEach(prsn -> jsonPersons.add(prsn.getContactJSON())));
-
-        Path jsonPath = Paths.get("D:\\Review 5 week problem\\Review 5 Week\\src\\main\\java\\com\\bridgelabz\\addressbook.json");
         try {
-            Files.deleteIfExists(jsonPath);
-            Files.writeString(jsonPath, jsonPersons.toJSONString(), StandardOpenOption.CREATE);
+            fileWriter = new FileWriter(csvPath);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        JSONParser jsonParser = new JSONParser();
+        CSVWriter writer = new CSVWriter(fileWriter);
 
-        System.out.println("\nReading data from JSON file:");
+        String[] header = {"FirstName","LastName","Email","Address","City","State","Zipcode","PhoneNumber"};
+        writer.writeNext(header);
+
+        List<String[]> csvLines = new ArrayList<String[]>();
+        dictionary.keySet().stream().forEach(bookName -> dictionary.get(bookName).getPersons()
+                .stream().forEach(person -> csvLines.add(person.getContactStrings())));
+
+
+        writer.writeAll(csvLines);
+
         try {
-            Object object = jsonParser.parse(Files.newBufferedReader(jsonPath));
-            JSONArray personsList = (JSONArray) object;
-            System.out.println(personsList);
-        } catch (IOException | ParseException e) {
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Reading CSV
+
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(csvPath);
+        } catch (FileNotFoundException e) {
 
             e.printStackTrace();
         }
 
+        CSVReader reader = new CSVReaderBuilder(fileReader).build();
 
+        List<String[]> linesOfData = null;
 
+        try {
+            linesOfData = reader.readAll();
+        } catch (IOException | CsvException e) {
 
+            e.printStackTrace();
+        }
 
+        System.out.println("\nReading data from csv file:");
+        linesOfData.stream().forEach(csvs -> {
+            for (String value : csvs)
+                System.out.print(value + "\t");
+            System.out.println();
+        });
 
+        try {
+            reader.close();
+        } catch (IOException e) {
 
+            e.printStackTrace();
+        }
     }
 }

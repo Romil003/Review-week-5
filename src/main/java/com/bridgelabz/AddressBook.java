@@ -1,9 +1,6 @@
 package com.bridgelabz;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class AddressBook {
@@ -147,4 +144,5 @@ public class AddressBook {
                 "contacts=" + contacts +
                 '}';
     }
+
 }
