@@ -30,6 +30,10 @@ public class AddressBook {
         }
     }
 
+    public ArrayList<Contact> getPersons() {
+        return contacts;
+    }
+
 
 
     public void editPersonDetails(){

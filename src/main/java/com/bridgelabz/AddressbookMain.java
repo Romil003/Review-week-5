@@ -1,10 +1,19 @@
 package com.bridgelabz;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +23,7 @@ public class AddressbookMain {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         HashMap<String,AddressBook> dictionary = new HashMap<>();
         AddressBook book = new AddressBook();
         Scanner input = new Scanner(System.in);
@@ -165,5 +174,38 @@ public class AddressbookMain {
         } catch (IOException e){
             e.printStackTrace();
         }
+
+        // writeCSV
+
+        String csvPath = "\"C:\\Users\\romil\\OneDrive\\Desktop\\review5.csv\"";
+        try{
+            FileWriter fileWriter = new FileWriter(csvPath);
+            CSVWriter writer = new CSVWriter(fileWriter);
+            List<String[]> csvLines = new ArrayList<String[]>();
+            dictionary.keySet().stream().forEach(bookName -> dictionary.get(bookName).getPersons().stream().forEach(person -> csvLines.add(person.getContactStrings())));
+            writer.writeAll(csvLines);
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+
+        // readCSV
+        try {
+            FileReader fileReader = new FileReader(csvPath);
+            CSVReader csvReader = new CSVReaderBuilder(fileReader).build();
+            List<String[]> linesOfData = null;
+            linesOfData = csvReader.readAll();
+            System.out.println("Reading from file : ");
+            linesOfData.stream().forEach(csvs -> {
+                for(String value : csvs){
+                    System.out.println(value);
+                    System.out.println();
+                }
+            });
+        } catch (FileNotFoundException | CsvException e){
+            e.printStackTrace();
+        }
+
+
     }
 }
