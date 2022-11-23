@@ -1,5 +1,8 @@
 package com.bridgelabz;
 
+import com.opencsv.bean.CsvBindByName;
+import org.json.simple.JSONObject;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -147,5 +150,21 @@ public class Contact implements Comparable {
         Contact contact = (Contact) o;
         int compareResult = this.city.compareTo(contact.city);
         return compareResult;
+    }
+
+    public JSONObject getContactJSON() {
+        JSONObject jsonPerson = new JSONObject();
+        jsonPerson.put("firstName", firstName);
+        jsonPerson.put("lastName", lastName);
+        jsonPerson.put("email", email);
+        jsonPerson.put("address", address);
+        jsonPerson.put("city", city);
+        jsonPerson.put("state", state);
+        jsonPerson.put("zip", zipcode);
+        jsonPerson.put("phonNum", phoneNumber);
+
+        JSONObject jsonPersonObject = new JSONObject();
+        jsonPersonObject.put("person", jsonPerson);
+        return jsonPersonObject;
     }
 }

@@ -1,1 +1,1 @@
-AddressBook{contacts=[Contact{firstName='a', lastName='a', address='a', city='a', state='a', zipcode=1, phoneNumber=1, email='a'}]}
+AddressBook{contacts=[Contact{firstName='a', lastName='b', address='c', city='d', state='e', zipcode=1, phoneNumber=1, email='d'}]}

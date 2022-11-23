@@ -142,7 +142,7 @@ public class AddressBook {
     }
 
     @Override
-    public String toString() {
+    public String toString(){
         return "AddressBook{" +
                 "contacts=" + contacts +
                 '}';
